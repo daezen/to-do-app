@@ -1,3 +1,4 @@
+import MainUI from './MainUI'
 import NavUI from './NavUI'
 
 export default class TaskOptionsUI {

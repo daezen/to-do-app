@@ -58,8 +58,8 @@ export default class MainUI {
 
   static addTask = text => {
     const $date = document.querySelector('[data-date-input]')
-    // id, title, desc, date, priority
-    Storage.addTask(Date.now(), text.value, null, new Date($date.value), TaskOptionsUI.getCurrPriority())
+    // id, title, desc, date, priority, category, item
+    Storage.addTask(Date.now(), text.value, null, new Date($date.value), TaskOptionsUI.getCurrPriority(), null, null)
     TaskOptionsUI.toggleDateInput()
     TaskOptionsUI.resetPriority()
     MainUI.toggleCreateTask(false)

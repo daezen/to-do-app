@@ -29,6 +29,7 @@ export default class TaskPopupUI {
     const $date = document.querySelector('[data-task-description-date]')
     const $title = document.querySelector('[data-task-description-title]')
     const $description = document.querySelector('[data-task-description-textarea]')
+    const $priority = document.querySelector('.task-description__priority-menu')
     const $prioritySvg = document.querySelector('[data-task-description-priority]').firstElementChild
     let date
     if (task.dueDate) date = new Date(task.dueDate).toISOString().slice(0, 10)
@@ -38,7 +39,8 @@ export default class TaskPopupUI {
     $article.id = task.id
     $title.textContent = task.title
     $description.textContent = task.description
-    $date.value = `${date}`
+    $date.value = date
+    $priority.classList.remove('task-description__priority-menu--show')
     switch (task.priority) {
       case 'red':
         $prioritySvg.dataset.color = 'red'

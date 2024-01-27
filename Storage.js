@@ -31,8 +31,8 @@ export default class Storage {
 
   static save = () => localStorage.setItem('tasks', JSON.stringify(Storage.TaskList))
 
-  static addTask = (id, title, desc, date, priority) => {
-    Storage.TaskList.push(new Task(id, title, desc, date, priority))
+  static addTask = (id, title, desc, date, priority, category, item) => {
+    Storage.TaskList.push(new Task(id, title, desc, date, priority, category, item))
     Storage.save()
     MainUI.renderTasks()
   }
