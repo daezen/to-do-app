@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>to-do</title>
+  <script defer type="module" src="/main.js"></script>
+  <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+  <style>
+    .curtain {
+      position: absolute;
+      background: #0e1015;
+      height: 100%;
+      width: 100%;
+      transition:
+        transform .8s ease;
+      z-index: 999;
+    }
+
+    body {
+      background: #0e1015;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="curtain"></div>
+  <div class="window">
+    <!-- nav -->
+    <aside class="nav" data-nav="">
+      <ul class="nav__categories">
+        <!-- <li class="
+					nav__item 
+					nav__item--selected 
+					nav__item--inbox" data-nav-item="Inbox">Inbox</li> -->
+        <li class="nav__item nav__item--selected nav__item--today" data-nav-item="Today">Today</li>
+        <li class="nav__item" data-nav-item="All_tasks">All Tasks</li>
+        <li class="nav__item" data-nav-item="Someday">Someday</li>
+        <li class="nav__item" data-nav-item="Next_7_days">Next 7 Days</li>
+      </ul>
+      <!-- nav custom lists -->
+      <ul class="custom-nav">
+        <li class="custom-nav__category" data-nav-item="Cube">Catergory</li>
+        <li class="custom-nav__item" data-nav-item="Circle0">Item</li>
+      </ul>
+      <!-- new list -->
+      <div class="new-list">
+        <div>
+          <button class="new-list__button">New List</button>
+        </div>
+      </div>
+      <!--  -->
+    </aside>
+    <!-- main -->
+    <main>
+      <header class="main-header">
+        <h1 data-main-header="">
+          Today
+        </h1>
+      </header>
+      <!-- create task -->
+      <div class="wrapper">
+        <div class="create-task" data-create-task="">
+          <form class="create-task__form" name="create-task" id="create-task">
+            <span class="create-task__dummycheck"></span>
+            <input type="text" class="create-task__text" data-create-task-text="">
+          </form>
+          <nav class="create-task-nav">
+            <label class="task-date-input">
+              <input data-task-date-check="" class="task-date-input__toggle" type="checkbox">
+              <input data-task-date-input="" class="task-date-input__date-input" type="date" data-date-input=""
+                min="2024-01-26">
+            </label>
+            <button type="button" class="task-nav__priority" data-task-priority>
+              <div class="task-nav__priority-menu">
+                <p class="task-nav__colored-circle" data-color="blue">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-check">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </p>
+                <p class="task-nav__colored-circle" data-color="yellow">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-check">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </p>
+                <p class="task-nav__colored-circle" data-color="red">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-check">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </p>
+              </div>
+            </button>
+            <button type="submit" class="task-nav__sumbit" form="create-task" data-sumbit-task=""></button>
+          </nav>
+        </div>
+        <!-- tasks -->
+        <ul data-task-container="" class="tasks"></ul>
+      </div>
+    </main>
+    <aside data-create-task-footer="" class="create-task-button">
+      <button data-create-task-button="">
+      </button>
+    </aside>
+    <!-- task description -->
+    <article data-task-description="" class="task-description">
+      <div class="task-description__topbar">
+        <button data-close-task-description="" class="task-description__close"></button>
+      </div>
+      <header class="task-description__header">
+        <h2 data-task-description-title="" role="textbox" class="task-description__title" contenteditable=""></h2>
+      </header>
+      <div data-task-description-textarea="" role="textbox" class="task-description__input" contenteditable=""></div>
+      <div class="task-description-nav">
+        <input type="date" class="task-description__date" data-task-description-date>
+        <button type="button" class="task-description__priority" data-task-description-priority>
+          <div class="task-description__priority-menu">
+            <p class="task-description__colored-circle" data-color="blue">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </p>
+            <p class="task-description__colored-circle" data-color="yellow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </p>
+            <p class="task-description__colored-circle" data-color="red">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </p>
+          </div>
+        </button>
+      </div>
+    </article>
+  </div>
+</body>
+
+</html>
