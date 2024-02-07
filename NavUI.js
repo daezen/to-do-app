@@ -18,8 +18,7 @@ export default class NavUI {
           // prettier-ignore
           return (
               dueDate.getDate() === today.getDate() && 
-              dueDate.getMonth() === today.getMonth() && 
-              dueDate.getFullYear() === today.getFullYear()
+              dueDate.getMonth() === today.getMonth()
             )
         })
       case 'All_tasks':

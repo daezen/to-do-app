@@ -15,7 +15,7 @@
       width: 100%;
       transition:
         transform .8s ease;
-      z-index: 999;
+      z-index: 69;
     }
 
     body {
@@ -42,13 +42,17 @@
       </ul>
       <!-- nav custom lists -->
       <ul class="custom-nav">
-        <li class="custom-nav__category" data-nav-item="Cube">Catergory</li>
-        <li class="custom-nav__item" data-nav-item="Circle0">Item</li>
+        <li class="custom-nav__category" data-nav-item="Category" data-category-id>Catergory</li>
+        <li class="custom-nav__item" data-nav-item="Circle0" data-item-id>Item</li>
       </ul>
       <!-- new list -->
       <div class="new-list">
-        <div>
-          <button class="new-list__button">New List</button>
+        <div data-new-list-menu>
+          <button class="new-list__category">new category</button>
+          <button class="new-list__list">new list</button>
+        </div>
+        <div class="new-list__button" data-new-list>
+          <button>New List</button>
         </div>
       </div>
       <!--  -->
@@ -56,22 +60,21 @@
     <!-- main -->
     <main>
       <header class="main-header">
-        <h1 data-main-header="">
+        <h1 data-main-header>
           Today
         </h1>
       </header>
       <!-- create task -->
       <div class="wrapper">
-        <div class="create-task" data-create-task="">
+        <div class="create-task" data-create-task>
           <form class="create-task__form" name="create-task" id="create-task">
             <span class="create-task__dummycheck"></span>
-            <input type="text" class="create-task__text" data-create-task-text="">
+            <input type="text" class="create-task__text" data-create-task-text>
           </form>
           <nav class="create-task-nav">
             <label class="task-date-input">
-              <input data-task-date-check="" class="task-date-input__toggle" type="checkbox">
-              <input data-task-date-input="" class="task-date-input__date-input" type="date" data-date-input=""
-                min="2024-01-26">
+              <input data-task-date-check class="task-date-input__toggle" type="checkbox">
+              <input data-task-date-input class="task-date-input__date-input" type="date" data-date-input>
             </label>
             <button type="button" class="task-nav__priority" data-task-priority>
               <div class="task-nav__priority-menu">
@@ -95,26 +98,26 @@
                 </p>
               </div>
             </button>
-            <button type="submit" class="task-nav__sumbit" form="create-task" data-sumbit-task=""></button>
+            <button type="submit" class="task-nav__sumbit" form="create-task" data-sumbit-task></button>
           </nav>
         </div>
         <!-- tasks -->
-        <ul data-task-container="" class="tasks"></ul>
+        <ul data-task-container class="tasks"></ul>
       </div>
     </main>
-    <aside data-create-task-footer="" class="create-task-button">
-      <button data-create-task-button="">
+    <aside data-create-task-footer class="create-task-button">
+      <button data-create-task-button>
       </button>
     </aside>
     <!-- task description -->
-    <article data-task-description="" class="task-description">
+    <article data-task-description class="task-description">
       <div class="task-description__topbar">
-        <button data-close-task-description="" class="task-description__close"></button>
+        <button data-close-task-description class="task-description__close"></button>
       </div>
       <header class="task-description__header">
-        <h2 data-task-description-title="" role="textbox" class="task-description__title" contenteditable=""></h2>
+        <h2 data-task-description-title role="textbox" class="task-description__title" contenteditable></h2>
       </header>
-      <div data-task-description-textarea="" role="textbox" class="task-description__input" contenteditable=""></div>
+      <div data-task-description-textarea role="textbox" class="task-description__input" contenteditable></div>
       <div class="task-description-nav">
         <input type="date" class="task-description__date" data-task-description-date>
         <button type="button" class="task-description__priority" data-task-description-priority>

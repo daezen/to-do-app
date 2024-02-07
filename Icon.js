@@ -3,7 +3,6 @@ export default class Icon {
 
   static append = (position, element, icon) => {
     if (element) element.insertAdjacentHTML(position, icon)
-    else return ''
   }
 
   static Inbox = `
@@ -92,7 +91,7 @@ export default class Icon {
 </svg>
 `
 
-  static Cube = `
+  static Category = `
   <svg viewBox="0 0 24 24" fill="none" >
   <path fill-rule="evenodd" clip-rule="evenodd" d="M17.925 7.425L12 10.85L6.075 7.425L12 4L17.925 7.425ZM3.2625 16.975C3.4375 17.275 3.68333 17.5167 4 17.7L11 21.725C11.3167 21.9083 11.65 22 12 22C12.35 22 12.6833 21.9083 13 21.725L20 17.7C20.3167 17.5167 20.5625 17.275 20.7375 16.975C20.9125 16.675 21 16.3417 21 15.975V8.025C21 7.65833 20.9125 7.325 20.7375 7.025C20.5625 6.725 20.3167 6.48333 20 6.3L13 2.275C12.6833 2.09167 12.35 2 12 2C11.65 2 11.3167 2.09167 11 2.275L4 6.3C3.68333 6.48333 3.4375 6.725 3.2625 7.025C3.0875 7.325 3 7.65833 3 8.025V15.975C3 16.3417 3.0875 16.675 3.2625 16.975ZM5 9.1L12 13L19 9.1V15.95L12 20L5 15.95V9.1Z" fill="${Icon.defaultColor}"/>
   </svg>
@@ -173,7 +172,7 @@ Icon.append('afterbegin', document.querySelector('[data-nav-item="All_tasks"]'),
 // Nav Someday
 Icon.append('afterbegin', document.querySelector('[data-nav-item="Someday"]'), Icon.Someday)
 // Create Lists Button
-Icon.append('beforebegin', document.querySelector('.new-list__button'), Icon.Plus)
+Icon.append('beforebegin', document.querySelector('.new-list__button').lastElementChild, Icon.Plus)
 // Create Tasks Button
 Icon.append('afterbegin', document.querySelector('[data-create-task-button]'), Icon.Plus)
 // Create Task Nav Calendar
@@ -187,6 +186,6 @@ Icon.append('afterbegin', document.querySelector('[data-close-task-description]'
 // Task Description Label
 Icon.append('afterbegin', document.querySelector('[data-task-description-priority]'), Icon.Label)
 // Nav Custom Category
-Icon.append('afterbegin', document.querySelector('.custom-nav__category'), Icon.Cube)
+Icon.append('afterbegin', document.querySelector('.custom-nav__category'), Icon.Category)
 // Nav Custom Item
 Icon.append('afterbegin', document.querySelector('.custom-nav__item'), Icon.Circle0)

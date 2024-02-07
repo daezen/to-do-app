@@ -9,4 +9,32 @@ export default class Task {
     this.item = item
     this.isDone = false
   }
+
+  setTitle(title) {
+    this.title = title
+  }
+
+  setDescription(desc) {
+    this.description = desc
+  }
+
+  setDueDate(date) {
+    this.dueDate = date
+  }
+
+  setPriority(priority) {
+    this.priority = priority
+  }
+
+  setCategory(category) {
+    this.category = category
+  }
+
+  setItem(item) {
+    this.item = item
+  }
+
+  check(bool) {
+    this.isDone = bool
+  }
 }

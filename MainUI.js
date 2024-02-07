@@ -14,7 +14,10 @@ export default class MainUI {
     $curtain.addEventListener('transitionend', () => $curtain.remove())
     $createTask.addEventListener('click', MainUI.toggleCreateTask)
     $taskForm.addEventListener('keydown', e => {
-      if (e.key === 'Escape') MainUI.toggleCreateTask(false)
+      if (e.key === 'Escape') {
+        $taskText.value = null
+        MainUI.toggleCreateTask(false)
+      }
     })
     $taskForm.addEventListener('submit', e => {
       e.preventDefault()
@@ -103,7 +106,7 @@ export default class MainUI {
     $input.addEventListener('change', e => {
       $text.classList.toggle('tasks__text--checked')
       $line.classList.toggle('tasks__line-through--show')
-      Storage.checkTast(e)
+      Storage.checkTast(Number(e.target.id), e.target.checked)
     })
     $input.checked = task.isDone
     MainUI.setTaskPriority(task, $checkbox)
@@ -127,3 +130,5 @@ export default class MainUI {
 
   static handleTaskText = e => TaskPopupUI.toggleElement(e)
 }
+
+MainUI.toggleCreateTask(true)

@@ -1,32 +1,28 @@
+import * as dayjs from 'dayjs'
 import MainUI from './MainUI'
 import Task from './Task'
 
 export default class Storage {
+  static loadTask = () => {
+    const tasks = JSON.parse(localStorage.getItem('tasks'))?.map(task => {
+      return Object.assign(new Task(), task)
+    }) || []
+    return tasks
+  }
+
   static TaskList = JSON.parse(localStorage.getItem('tasks')) || [
-    {
-      id: 1,
-      title: 'Finish the to do app',
-      description: `Learn the skills required to be able to make a to-do app`,
-      dueDate: new Date(),
-      priority: 'red',
-      isDone: true,
-    },
-    {
-      id: 2,
-      title: 'Reach the end of thought',
-      description: `HealthyGamer's advise about getting away from external stimuli...`,
-      dueDate: new Date(new Date().setDate(new Date().getDate() + 5)),
-      priority: 'yellow',
-      isDone: false,
-    },
-    {
-      id: 3,
-      title: 'This task has no due date',
-      description: `Task used as a placeholder to check if the someday category works`,
-      dueDate: '',
-      priority: 'blue',
-      isDone: false,
-    },
+    new Task(1, 'Finish the to do app', `Learn the skills required to be able to make a to-do app`, new Date(), 'red', 'Category', 'Item', true),
+    new Task(
+      2,
+      'Reach the end of thought',
+      `HealthyGamer's advise about getting away from external stimuli...`,
+      new Date(new Date().setDate(new Date().getDate() + 5)),
+      'yellow',
+      'Category',
+      'Item',
+      false
+    ),
+    new Task(3, 'This task has no due date', `Task used as a placeholder to check if the someday category works`, '2024-02-11', 'blue', null, null, false),
   ]
 
   static save = () => localStorage.setItem('tasks', JSON.stringify(Storage.TaskList))
@@ -37,14 +33,14 @@ export default class Storage {
     MainUI.renderTasks()
   }
 
-  static checkTast = e => {
-    const task = Storage.TaskList.find(task => Number(e.target.id) === task.id)
-    task.isDone = e.target.checked
+  static checkTast = (id, bool) => {
+    const task = Storage.TaskList.find(task => id === task.id)
+    task.isDone = bool
     Storage.save()
   }
 
-  static deleteTask = e => {
-    const task = Storage.TaskList.findIndex(task => Number(e.target.id) === task.id)
+  static deleteTask = id => {
+    const task = Storage.TaskList.findIndex(task => id === task.id)
     Storage.TaskList.splice(task, 1)
     Storage.save()
     MainUI.renderTasks()
@@ -57,3 +53,6 @@ export default class Storage {
 
   static getTasksList = () => Storage.TaskList
 }
+
+console.log(dayjs().date())
+console.log(String(new Date().getDate()))
