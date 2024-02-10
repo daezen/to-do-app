@@ -1,40 +1,54 @@
 export default class Task {
-  constructor(id, title, desc, date, priority, category, item) {
+  constructor(id, title, description, dueDate, priority, category, item, isDone) {
     this.id = id
-    this.title = title
-    this.description = desc
-    this.dueDate = date.toLocaleString(navigator.language, { timeZone: 'UTC' })
-    this.priority = priority
-    this.category = category
-    this.item = item
-    this.isDone = false
+    this._title = title
+    this._description = description
+    this.dueDate = dueDate
+    this._priority = priority
+    this._category = category
+    this._item = item
+    this._isDone = isDone
   }
-
-  setTitle(title) {
-    this.title = title
+  get title() {
+    return this._title
   }
-
-  setDescription(desc) {
-    this.description = desc
+  set title(title) {
+    this._title = title
   }
-
-  setDueDate(date) {
-    this.dueDate = date
+  get description() {
+    return this._description
   }
-
-  setPriority(priority) {
-    this.priority = priority
+  set description(description) {
+    this._description = description
   }
-
-  setCategory(category) {
-    this.category = category
+  get date() {
+    return this.dueDate
   }
-
-  setItem(item) {
-    this.item = item
+  set date(dueDate) {
+    this.dueDate = dueDate
   }
-
-  check(bool) {
-    this.isDone = bool
+  get priority() {
+    return this._priority
+  }
+  set priority(priority) {
+    this._priority = priority
+  }
+  get category() {
+    return this._category
+  }
+  set category(category) {
+    this._category = category
+  }
+  get item() {
+    this._item = item
+  }
+  set item(item) {
+    this._item = item
+  }
+  get isDone() {
+    return this._isDone
+  }
+  set isDone(isDone) {
+    this._isDone = isDone
   }
 }

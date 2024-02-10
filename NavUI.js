@@ -1,8 +1,21 @@
 import TaskOptionsUI from './TaskOptionsUI'
 import Storage from './Storage'
 import MainUI from './MainUI'
+import * as dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
+import isToday from 'dayjs/plugin/isToday'
+dayjs.extend(isBetween)
+dayjs.extend(isToday)
 
 export default class NavUI {
+  static initItems = () => {
+    const navElem = document.querySelector('[data-nav]')
+    const navItems = navElem.querySelectorAll('li')
+    navElem.addEventListener('click', e => {
+      if (e.target.tagName === 'LI') NavUI.updateSelectedNavItem(e, navItems)
+    })
+  }
+
   static list = 'Today'
 
   static setCurrList = list => (NavUI.list = list)
@@ -12,14 +25,8 @@ export default class NavUI {
     switch (NavUI.list) {
       case 'Today':
         return Storage.getTasksList().filter(task => {
-          if (!task.dueDate) return false
-          const dueDate = new Date(task.dueDate)
-          const today = new Date()
-          // prettier-ignore
-          return (
-              dueDate.getDate() === today.getDate() && 
-              dueDate.getMonth() === today.getMonth()
-            )
+          if (!task.date) return false
+          return dayjs(task.date).isToday()
         })
       case 'All_tasks':
         return Storage.getTasksList()
@@ -27,25 +34,14 @@ export default class NavUI {
         return Storage.getTasksList().filter(task => task.dueDate === '')
       case 'Next_7_days':
         return Storage.getTasksList().filter(task => {
-          if (!task.dueDate) return false
-          const dueDate = new Date(task.dueDate)
-          const next7Days = new Date()
-          const today = new Date()
-          today.setHours(0, 0, 0, 0)
-          next7Days.setDate(next7Days.getDate() + 6)
-          return dueDate >= today && dueDate <= next7Days
+          if (!task.date) return false
+          const today = dayjs()
+          const nextWeek = today.add(6, 'day')
+          return dayjs(task.date).isBetween(today, nextWeek)
         })
       default:
         return Storage.getTasksList()
     }
-  }
-
-  static initItems = () => {
-    const navElem = document.querySelector('[data-nav]')
-    const navItems = navElem.querySelectorAll('li')
-    navElem.addEventListener('click', e => {
-      if (e.target.tagName === 'LI') NavUI.updateSelectedNavItem(e, navItems)
-    })
   }
 
   static updateSelectedNavItem = (e, items) => {

@@ -60,20 +60,18 @@
     <!-- main -->
     <main>
       <header class="main-header">
-        <h1 data-main-header>
-          Today
-        </h1>
+        <h1 data-main-header>Today</h1>
       </header>
       <!-- create task -->
       <div class="wrapper">
         <div class="create-task" data-create-task>
-          <form class="create-task__form" name="create-task" id="create-task">
+          <form class="create-task__form" name="create-task" id="create-task" autocomplete="off">
             <span class="create-task__dummycheck"></span>
-            <input type="text" class="create-task__text" data-create-task-text>
+            <input type="text" class="create-task__text" name="create-task" data-create-task-text>
           </form>
           <nav class="create-task-nav">
             <label class="task-date-input">
-              <input data-task-date-check class="task-date-input__toggle" type="checkbox">
+              <input data-task-date-check class="task-date-input__toggle" name="task-date-input__toggle" type="checkbox">
               <input data-task-date-input class="task-date-input__date-input" type="date" data-date-input>
             </label>
             <button type="button" class="task-nav__priority" data-task-priority>

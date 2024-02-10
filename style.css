@@ -634,9 +634,16 @@ main {
 
 .task-description__date {
   all: unset;
-  width: min-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: hsl(0, 0%, 69%);
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(.75);
+}
+
 
 .task-description-nav {
   display: flex;

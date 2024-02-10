@@ -1,6 +1,7 @@
 import TaskOptionsUI from './TaskOptionsUI'
 import Storage from './Storage'
 import MainUI from './MainUI'
+import * as dayjs from 'dayjs'
 
 export default class TaskPopupUI {
   static initItems = () => {
@@ -13,14 +14,19 @@ export default class TaskPopupUI {
     $date.addEventListener('change', e => TaskPopupUI.updateTask($title, $description, $date))
     $title.addEventListener('keyup', () => TaskPopupUI.updateTask($title, $description, $date))
     $description.addEventListener('keyup', () => TaskPopupUI.updateTask($title, $description, $date))
-    $close.addEventListener('click', e => TaskPopupUI.toggleElement(e, 'close'))
+    $close.addEventListener('click', _ => TaskPopupUI.toggleElement(_, 'close'))
   }
 
-  static toggleElement = (e, button) => {
+  static toggleElement = (task, btn) => {
     const classList = document.querySelector('[data-task-description]').classList
-    const task = Storage.getTasksList().find(task => Number(e.target.parentElement.id) === task.id)
-    if (button === 'close') return classList.remove('task-description--show')
+    const $title = document.querySelector('[data-task-description-title]')
+    let lastTitle = $title.textContent
+    if (btn === 'close') return classList.remove('task-description--show')
     if (!classList.contains('task-description--show')) classList.add('task-description--show')
+    if (btn === 'del') {
+      if (lastTitle === task.title) classList.remove('task-description--show')
+      return
+    }
     TaskPopupUI.updateHtml(task)
   }
 
@@ -28,14 +34,11 @@ export default class TaskPopupUI {
     const $article = document.querySelector('[data-task-description]')
     const $date = document.querySelector('[data-task-description-date]')
     const $title = document.querySelector('[data-task-description-title]')
-    const $description = document.querySelector('[data-task-description-textarea]')
     const $priority = document.querySelector('.task-description__priority-menu')
+    const $description = document.querySelector('[data-task-description-textarea]')
     const $prioritySvg = document.querySelector('[data-task-description-priority]').firstElementChild
-    let date
-    if (task.dueDate) date = new Date(task.dueDate).toISOString().slice(0, 10)
-    if (task.priority === 'red') $title.style.textDecorationColor = 'var(--task-red-clr)'
-    else if (task.priority === 'yellow') $title.style.textDecorationColor = 'var(--task-yellow-clr)'
-    else $title.style.textDecorationColor = ''
+    let date = ''
+    if (task.dueDate) date = dayjs(task.date).format('YYYY-MM-DD')
     $article.id = task.id
     $title.textContent = task.title
     $description.textContent = task.description
@@ -45,17 +48,22 @@ export default class TaskPopupUI {
       case 'red':
         $prioritySvg.dataset.color = 'red'
         $prioritySvg.style.stroke = 'var(--task-red-clr)'
+        $title.style.textDecorationColor = 'var(--task-red-clr)'
         break
       case 'yellow':
         $prioritySvg.dataset.color = 'yellow'
         $prioritySvg.style.stroke = 'var(--task-yellow-clr)'
+        $title.style.textDecorationColor = 'var(--task-yellow-clr)'
         break
       case 'blue':
         $prioritySvg.dataset.color = 'blue'
         $prioritySvg.style.stroke = ''
+        $title.style.textDecorationColor = ''
         break
       default:
+        $prioritySvg.dataset.color = 'blue'
         $prioritySvg.style.stroke = ''
+        $title.style.textDecorationColor = ''
     }
     $date.setAttribute('min', TaskOptionsUI.getTodayDateFormatted())
   }
