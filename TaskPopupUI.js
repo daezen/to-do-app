@@ -11,7 +11,7 @@ export default class TaskPopupUI {
     const $description = document.querySelector('[data-task-description-textarea]')
     const $priority = document.querySelector('[data-task-description-priority]')
     $priority.addEventListener('click', TaskPopupUI.handlePriority)
-    $date.addEventListener('change', e => TaskPopupUI.updateTask($title, $description, $date))
+    $date.addEventListener('change', () => TaskPopupUI.updateTask($title, $description, $date))
     $title.addEventListener('keyup', () => TaskPopupUI.updateTask($title, $description, $date))
     $description.addEventListener('keyup', () => TaskPopupUI.updateTask($title, $description, $date))
     $close.addEventListener('click', _ => TaskPopupUI.toggleElement(_, 'close'))
@@ -38,7 +38,7 @@ export default class TaskPopupUI {
     const $description = document.querySelector('[data-task-description-textarea]')
     const $prioritySvg = document.querySelector('[data-task-description-priority]').firstElementChild
     let date = ''
-    if (task.dueDate) date = dayjs(task.date).format('YYYY-MM-DD')
+    if (task.date) date = dayjs(task.date).format('YYYY-MM-DD')
     $article.id = task.id
     $title.textContent = task.title
     $description.textContent = task.description
@@ -65,16 +65,16 @@ export default class TaskPopupUI {
         $prioritySvg.style.stroke = ''
         $title.style.textDecorationColor = ''
     }
-    $date.setAttribute('min', TaskOptionsUI.getTodayDateFormatted())
+    $date.setAttribute('min', dayjs().format('YYYY-MM-DD'))
   }
 
   static updateTask = (title, desc, date) => {
     const $article = document.querySelector('[data-task-description]')
     const task = Storage.getTasksList().find(task => Number($article.id) === task.id)
-    task.dueDate = new Date(date.value).toLocaleString(navigator.language, { timeZone: 'UTC' })
+    task.date = dayjs(date.value).format('YYYY-MM-DD')
     task.description = desc.textContent
     task.title = title.textContent
-    Storage.save()
+    Storage.saveTasks()
     MainUI.renderTasks()
   }
 
@@ -106,7 +106,7 @@ export default class TaskPopupUI {
           task.priority = 'blue'
       }
     }
-    Storage.save()
+    Storage.saveTasks()
     MainUI.renderTasks()
   }
 }

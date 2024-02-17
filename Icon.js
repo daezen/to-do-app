@@ -172,7 +172,7 @@ Icon.append('afterbegin', document.querySelector('[data-nav-item="All_tasks"]'),
 // Nav Someday
 Icon.append('afterbegin', document.querySelector('[data-nav-item="Someday"]'), Icon.Someday)
 // Create Lists Button
-Icon.append('beforebegin', document.querySelector('.new-list__button').lastElementChild, Icon.Plus)
+Icon.append('afterbegin', document.querySelector('[data-new-list]'), Icon.Plus)
 // Create Tasks Button
 Icon.append('afterbegin', document.querySelector('[data-create-task-button]'), Icon.Plus)
 // Create Task Nav Calendar
@@ -189,3 +189,9 @@ Icon.append('afterbegin', document.querySelector('[data-task-description-priorit
 Icon.append('afterbegin', document.querySelector('.custom-nav__category'), Icon.Category)
 // Nav Custom Item
 Icon.append('afterbegin', document.querySelector('.custom-nav__item'), Icon.Circle0)
+// Create Custom Category
+Icon.append('afterbegin', document.querySelector('.new-list__category'), Icon.Category)
+// Create Custom Item
+Icon.append('afterbegin', document.querySelector('.new-list__list'), Icon.Circle0)
+//
+Icon.append('beforeend', document.querySelector('[data-category-options]'), Icon.DownArrow)

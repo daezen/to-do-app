@@ -26,6 +26,13 @@
 </head>
 
 <body>
+  <dialog data-create-category-modal class="create-category-modal">
+    <div class="create-category-modal__menu">
+      <button>X</button>
+      <input type="text" placeholder="Add category name">
+      <button>continue</button>
+    </div>
+  </dialog>
   <div class="curtain"></div>
   <div class="window">
     <!-- nav -->
@@ -41,19 +48,17 @@
         <li class="nav__item" data-nav-item="Next_7_days">Next 7 Days</li>
       </ul>
       <!-- nav custom lists -->
-      <ul class="custom-nav">
-        <li class="custom-nav__category" data-nav-item="Category" data-category-id>Catergory</li>
-        <li class="custom-nav__item" data-nav-item="Circle0" data-item-id>Item</li>
+      <ul data-custom-lists class="custom-nav">
+        <!-- <li class="custom-nav__category" data-nav-item="Category" data-category-id="1" data-custom-nav>Catergory</li> -->
+        <!-- <li class="custom-nav__item" data-nav-item="Circle0" data-item-id="1" data-custom-nav>Item</li> -->
       </ul>
       <!-- new list -->
       <div class="new-list">
-        <div data-new-list-menu>
-          <button class="new-list__category">new category</button>
-          <button class="new-list__list">new list</button>
+        <div data-new-list-menu class="new-list__menu">
+          <button data-new-list-category class="new-list__category">New category</button>
+          <button data-new-list-item class="new-list__list">New list</button>
         </div>
-        <div class="new-list__button" data-new-list>
-          <button>New List</button>
-        </div>
+        <button data-new-list class="new-list__button">New List</button>
       </div>
       <!--  -->
     </aside>
@@ -71,7 +76,8 @@
           </form>
           <nav class="create-task-nav">
             <label class="task-date-input">
-              <input data-task-date-check class="task-date-input__toggle" name="task-date-input__toggle" type="checkbox">
+              <input data-task-date-check class="task-date-input__toggle" name="task-date-input__toggle"
+                type="checkbox">
               <input data-task-date-input class="task-date-input__date-input" type="date" data-date-input>
             </label>
             <button type="button" class="task-nav__priority" data-task-priority>

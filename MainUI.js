@@ -6,8 +6,9 @@ import Task from './Task'
 import Icon from './Icon'
 import './style.css'
 
-const $background = document.querySelector('body')
-$background.addEventListener('dblclick', () => console.log(Storage.getTasksList()))
+window.addEventListener('dblclick', () => {
+  console.log(Storage.getCustomItems())
+})
 
 export default class MainUI {
   static initItems = () => {
@@ -19,11 +20,12 @@ export default class MainUI {
     $taskContainer.addEventListener('click', MainUI.handleTask)
     $curtain.addEventListener('transitionend', () => $curtain.remove())
     $createTask.addEventListener('click', MainUI.toggleCreateTask)
-    $taskForm.addEventListener('keydown', e => {
+    document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
         $taskInput.value = null
         MainUI.toggleCreateTask(false)
       }
+      if (e.altKey && e.key === 'n') MainUI.toggleCreateTask()
     })
     $taskForm.addEventListener('submit', e => {
       e.preventDefault()
@@ -31,6 +33,7 @@ export default class MainUI {
       else MainUI.addTask($taskInput)
     })
     if (!localStorage.getItem('tasks')) Storage.initSampleTasks()
+    if (!localStorage.getItem('items')) Storage.initSampleItems()
     TaskOptionsUI.initItems()
     TaskPopupUI.initItems()
     MainUI.renderTasks()
@@ -38,31 +41,39 @@ export default class MainUI {
     // Storage.save()
   }
 
-  static toggleCreateTask = bool => {
+  static toggleCreateTask = show => {
     const classListText = document.querySelector('[data-create-task]').classList
     const classListNav = document.querySelector('[data-task-container]').classList
-    if (!bool) {
+    const $input = document.querySelector('[data-create-task-text]')
+    let isOpen = classListText.contains('create-task--show')
+    if (show === false) {
       classListText.remove('create-task--show')
       classListNav.remove('tasks--offset')
+      isOpen = false
       return
     }
-    classListText.toggle('create-task--show')
-    classListNav.toggle('tasks--offset')
     TaskOptionsUI.toggleDateInput()
+    if (isOpen) {
+      classListNav.remove('tasks--offset')
+      classListText.remove('create-task--show')
+      $input.blur()
+      TaskOptionsUI.handlePriority(null, false)
+    } else if (!isOpen) {
+      classListNav.add('tasks--offset')
+      classListText.add('create-task--show')
+      $input.focus()
+    }
   }
 
-  static changeHeaderText = text => {
-    document.querySelector('[data-main-header]').textContent = text
-  }
+  static changeHeaderText = text => (document.querySelector('[data-main-header]').textContent = text)
 
-  static changeHeaderIcon = icon => {
-    Icon.append('afterbegin', document.querySelector('[data-main-header]'), Icon[icon])
-  }
+  static changeHeaderIcon = icon => Icon.append('afterbegin', document.querySelector('[data-main-header]'), Icon[icon])
 
-  static updateMain = e => {
+  static updateMain = (e, bool) => {
     MainUI.changeHeaderText(e.target.textContent)
     MainUI.changeHeaderIcon(e.target.dataset.navItem)
-    NavUI.setCurrList(e.target.dataset.navItem)
+    if (bool === false) NavUI.setList(e.target.dataset.navItem)
+    if (bool === true) NavUI.setList(Number(e.target.dataset.categoryId))
     MainUI.renderTasks()
   }
 
@@ -71,27 +82,26 @@ export default class MainUI {
     Storage.addTask(new Task(Date.now(), $input.value, null, $date.value, TaskOptionsUI.getCurrPriority(), null, null, false))
     TaskOptionsUI.toggleDateInput()
     TaskOptionsUI.resetPriority()
-    // MainUI.toggleCreateTask(false)
     $input.value = null
   }
 
   static renderTasks = () => {
     const $container = document.querySelector('[data-task-container]')
     $container.innerHTML = null
-    NavUI.getCurrList().forEach(task => {
+    NavUI.getList().forEach(task => {
       const { id, title } = task
       const taskHtml = `
-      <li id="${id}">
-        <label class="tasks__label" data-task-item>
-          <input type="checkbox" name="tasks__label">
-          <span class="tasks__checkbox"></span>
-        </label>
-        <p class="tasks__text">${title}</p>
-        <div class="tasks__line-through"></div>
-        <div class="tasks__delete">
-          <button></button>
-        </div>
-      </li>`
+    <li id="${id}">
+      <label class="tasks__label" data-task-item>
+        <input type="checkbox" name="tasks__label">
+        <span class="tasks__checkbox"></span>
+      </label>
+      <p class="tasks__text">${title}</p>
+      <div class="tasks__line-through"></div>
+      <div class="tasks__delete">
+        <button></button>
+      </div>
+    </li>`
       $container.insertAdjacentHTML('beforeend', taskHtml)
       MainUI.initTask(task)
     })
@@ -127,7 +137,7 @@ export default class MainUI {
     }
     if (e.target.tagName === 'INPUT') {
       task.isDone = e.target.checked
-      Storage.save()
+      Storage.saveTasks()
     }
   }
 
@@ -145,4 +155,3 @@ export default class MainUI {
     }
   }
 }
-MainUI.toggleCreateTask(true)

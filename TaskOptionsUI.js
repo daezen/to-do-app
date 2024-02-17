@@ -1,18 +1,8 @@
-import MainUI from './MainUI'
 import NavUI from './NavUI'
+import * as dayjs from 'dayjs'
 
 export default class TaskOptionsUI {
   static $dateToggle = document.querySelector('[data-task-date-check]')
-
-  static getTodayDateFormatted = bool => {
-    let today = new Date()
-    if (bool) today.setDate(today.getDate() + 6)
-    let year = today.getFullYear()
-    let month = (today.getMonth() + 1).toString().padStart(2, '0')
-    let day = today.getDate().toString().padStart(2, '0')
-    let formattedDate = `${year}-${month}-${day}`
-    return formattedDate
-  }
 
   static initItems = () => {
     const $priority = document.querySelector('[data-task-priority]')
@@ -39,15 +29,15 @@ d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.2
     const $date = document.querySelector('[data-task-date-input]')
     switch (NavUI.list) {
       case 'Today':
-        $date.value = TaskOptionsUI.getTodayDateFormatted()
+        $date.value = dayjs().format('YYYY-MM-DD')
         break
       case 'Next_7_days':
-        $date.value = TaskOptionsUI.getTodayDateFormatted(true)
+        $date.value = dayjs().add(6, 'day').format('YYYY-MM-DD')
         break
       default:
         $date.value = ''
     }
-    $date.setAttribute('min', TaskOptionsUI.getTodayDateFormatted())
+    $date.setAttribute('min', dayjs().format('YYYY-MM-DD'))
   }
 
   static resetPriority = () => {
@@ -58,9 +48,11 @@ d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.2
     $prioritySvg.style.stroke = ''
   }
 
-  static handlePriority = e => {
+  static handlePriority = (e, isOpen) => {
     const classList = document.querySelector('.task-nav__priority-menu').classList
     const $prioritySvg = document.querySelector('.task-priority-svg')
+    if (!isOpen) classList.remove('task-nav__priority-menu--show')
+    if (e === null) return
     classList.toggle('task-nav__priority-menu--show')
     if (e.target.dataset.color) {
       const $dummyCheck = document.querySelector('.create-task__dummycheck')
