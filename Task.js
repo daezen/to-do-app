@@ -1,12 +1,12 @@
 export default class Task {
-  constructor(id, title, description, dueDate, priority, category, item, isDone) {
+  constructor(id, title, description, dueDate, priority, category, list, isDone) {
     this.id = id
     this._title = title
     this._description = description
     this.dueDate = dueDate
     this._priority = priority
     this._category = category
-    this._item = item
+    this._list = list
     this._isDone = isDone
   }
   get title() {
@@ -39,11 +39,11 @@ export default class Task {
   set category(category) {
     this._category = category
   }
-  get item() {
-    this._item = item
+  get list() {
+    return this._list
   }
-  set item(item) {
-    this._item = item
+  set list(list) {
+    this._list = list
   }
   get isDone() {
     return this._isDone

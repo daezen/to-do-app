@@ -7,7 +7,7 @@ import Icon from './Icon'
 import './style.css'
 
 window.addEventListener('dblclick', () => {
-  console.log(Storage.getCustomItems())
+  console.log(Storage.getCustomLists())
 })
 
 export default class MainUI {
@@ -22,8 +22,8 @@ export default class MainUI {
     $createTask.addEventListener('click', MainUI.toggleCreateTask)
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
-        $taskInput.value = null
         MainUI.toggleCreateTask(false)
+        $taskInput.value = null
       }
       if (e.altKey && e.key === 'n') MainUI.toggleCreateTask()
     })
@@ -33,7 +33,7 @@ export default class MainUI {
       else MainUI.addTask($taskInput)
     })
     if (!localStorage.getItem('tasks')) Storage.initSampleTasks()
-    if (!localStorage.getItem('items')) Storage.initSampleItems()
+    if (!localStorage.getItem('lists')) Storage.initSampleLists()
     TaskOptionsUI.initItems()
     TaskPopupUI.initItems()
     MainUI.renderTasks()
@@ -69,11 +69,15 @@ export default class MainUI {
 
   static changeHeaderIcon = icon => Icon.append('afterbegin', document.querySelector('[data-main-header]'), Icon[icon])
 
-  static updateMain = (e, bool) => {
+  static updateMain = (e, isCustomList) => {
     MainUI.changeHeaderText(e.target.textContent)
     MainUI.changeHeaderIcon(e.target.dataset.navItem)
-    if (bool === false) NavUI.setList(e.target.dataset.navItem)
-    if (bool === true) NavUI.setList(Number(e.target.dataset.categoryId))
+    let isCategory = e.target.hasAttribute('data-category-id')
+    if (isCustomList === false) NavUI.setList(e.target.dataset.navItem)
+    if (isCustomList === true) {
+      if (isCategory) NavUI.setList([Number(e.target.dataset.categoryId), isCategory])
+      else NavUI.setList([Number(e.target.dataset.uid), isCategory])
+    }
     MainUI.renderTasks()
   }
 
@@ -91,24 +95,24 @@ export default class MainUI {
     NavUI.getList().forEach(task => {
       const { id, title } = task
       const taskHtml = `
-    <li id="${id}">
-      <label class="tasks__label" data-task-item>
-        <input type="checkbox" name="tasks__label">
-        <span class="tasks__checkbox"></span>
-      </label>
-      <p class="tasks__text">${title}</p>
-      <div class="tasks__line-through"></div>
-      <div class="tasks__delete">
-        <button></button>
-      </div>
-    </li>`
+  <li data-task="${id}">
+    <label class="tasks__label" data-task-item>
+      <input type="checkbox" name="tasks__label">
+      <span class="tasks__checkbox"></span>
+    </label>
+    <p class="tasks__text">${title}</p>
+    <div class="tasks__line-through"></div>
+    <div class="tasks__delete">
+      <button></button>
+    </div>
+  </li>`
       $container.insertAdjacentHTML('beforeend', taskHtml)
       MainUI.initTask(task)
     })
   }
 
   static initTask = task => {
-    const $task = document.querySelector(`li[id="${task.id}"]`)
+    const $task = document.querySelector(`[data-task="${task.id}"`)
     const lineClassList = $task.querySelector('div').classList
     const textClassList = $task.querySelector('p').classList
     const $checkbox = $task.querySelector('span')
@@ -129,7 +133,7 @@ export default class MainUI {
   }
 
   static handleTask(e) {
-    const task = Storage.findTask(Number(e.target.closest('li').id))
+    const task = Storage.findTask(Number(e.target.closest('li').dataset.task))
     if (e.target.tagName === 'P') TaskPopupUI.toggleElement(task)
     if (e.target.tagName === 'BUTTON') {
       Storage.deleteTask(task.id)

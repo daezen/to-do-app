@@ -32,31 +32,47 @@ export default class NavUI {
       else NavUI.selectCustomItem(e)
       if (e.target.tagName === 'BUTTON') NavUI.createItem()
     })
-    NavUI.renderItems()
+    NavUI.renderLists()
   }
 
-  static renderItems = () => {
-    Storage.getCustomItems().forEach(item => {
-      const $container = document.querySelector('[data-custom-lists]')
-      const { id, title } = item
-      const itemHtml = `
-    <li class="custom-nav__category" data-nav-item="Category" data-category-id="${id}" data-custom-nav>${title}</li`
-      $container.insertAdjacentHTML('beforeend', itemHtml)
-      NavUI.initItem(item)
-    })
+  static renderLists = () => {
+    Storage.getCustomLists()
+      .filter(category => category.type === 'category')
+      .forEach(category => {
+        const $container = document.querySelector('[data-custom-lists]')
+        const categoryHtml = `
+    <li class="custom-nav__category" data-nav-item="Category" data-category-id="${category.id}" data-custom-nav>${category.title}</li`
+        $container.insertAdjacentHTML('beforeend', categoryHtml)
+        Storage.getCustomLists()
+          .filter(list => list.id === category.id && list.type === 'list')
+          .forEach(list => {
+            const listHtml = `
+        <li class="custom-nav__item" data-nav-item="Circle0" data-list-id="${list.id}" data-uid="${list.uid}" data-custom-nav>${list.title}</li>`
+            $container.insertAdjacentHTML('beforeend', listHtml)
+            NavUI.initList(list)
+          })
+        NavUI.initCategory(category)
+      })
   }
 
-  static initItem = item => {
-    const $item = document.querySelector(`[data-category-id="${item.id}"]`)
-    Icon.append('afterbegin', $item, Icon.Category)
+  static initCategory = category => {
+    const $category = document.querySelector(`[data-category-id="${category.id}"]`)
+    Icon.append('afterbegin', $category, Icon.Category)
+  }
+
+  static initList = list => {
+    const $list = document.querySelector(`[data-uid="${list.uid}"]`)
+    Icon.append('afterbegin', $list, Icon.Circle0)
   }
 
   static setList = list => (NavUI.list = list)
 
   static getList = () => {
     TaskOptionsUI.handleDate()
-    if (typeof NavUI.list === 'number') {
-      return Storage.getTasksList().filter(task => task.category === NavUI.list)
+    if (Array.isArray(NavUI.list) && NavUI.list[1]) {
+      return Storage.getTasksList().filter(task => task.category === NavUI.list[0])
+    } else if (Array.isArray(NavUI.list) && !NavUI.list[1]) {
+      return Storage.getTasksList().filter(task => task.list === NavUI.list[0])
     }
     switch (NavUI.list) {
       case 'Today':
@@ -75,7 +91,7 @@ export default class NavUI {
           return dayjs(task.date).isBetween(dayjs(), nextWeek)
         })
       default:
-        return Storage.getTasksList()
+        return null
     }
   }
 
