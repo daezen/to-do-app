@@ -124,12 +124,14 @@ nav
 }
 
 .create-category-modal {
+  position: relative;
   top: 50%;
   left: 50%;
   translate: -50% -50%;
   border: none;
   background: none;
   transform: 1s;
+  overflow: visible;
 }
 
 .create-category-modal[open] {
@@ -156,11 +158,98 @@ nav
 }
 
 .create-category-modal__menu {
+  position: relative;
+  display: flex;
+  flex-flow: column;
   width: 500px;
-  height: 100px;
   color: #e4e4e4;
   border-radius: var(--m-radius);
   background: var(--main-bg-clr);
+  padding: var(--m-gap);
+  gap: var(--s-gap);
+}
+
+.modal-dropdown {
+  cursor: pointer;
+  position: relative;
+  border-radius: var(--s-radius);
+  background: var(--create-task-bg-clr);
+  padding: var(--s-gap) var(--l-gap);
+}
+
+.modal-dropdown__open {
+  all: unset;
+  height: 1.25rem;
+}
+
+.modal-dropdown__lists {
+  position: absolute;
+  margin-top: var(--m-gap);
+  left: 50%;
+  width: 100%;
+  transform: translateX(-50%) scaleY(0);
+  border-radius: var(--s-radius);
+  background: var(--create-task-bg-clr);
+  padding: var(--m-gap) 0;
+  transform-origin: top;
+  /* transition: transform var(--anim-fast) ease; */
+}
+
+.modal-dropdown__lists--show {
+  transform: translateX(-50%) scaleY(1);
+}
+
+.modal-dropdown__lists p {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--m-gap);
+  margin-inline: var(--m-gap);
+  border-radius: var(--s-radius);
+  gap: var(--s-gap);
+  height: 2rem;
+}
+
+.modal-dropdown__lists p:hover {
+  background: var(--highlight-clr);
+}
+
+.modal-dropdown__lists p svg {
+  height: var(--icon-size);
+}
+
+.create-category-modal__close {
+  display: flex;
+  justify-content: end;
+  height: 1.5rem;
+}
+
+.create-category-modal__close button {
+  all: unset;
+  cursor: pointer;
+  aspect-ratio: 1 / 1;
+}
+
+.create-category-modal__close svg {
+  height: 100%;
+  width: 100%;
+}
+
+.create-category-modal__name {
+  all: unset;
+  font-size: 1.5rem;
+}
+
+.create-category-modal__continue {
+  display: flex;
+  justify-content: end;
+}
+
+.create-category-modal__continue button {
+  all: unset;
+  cursor: pointer;
+  border-radius: var(--m-radius);
+  background: var(--highlight-clr);
+  padding: var(--s-gap) var(--l-gap);
 }
 
 .custom-nav {
@@ -217,7 +306,7 @@ nav
   display: flex;
   flex-flow: column;
   padding: var(--m-gap);
-  transform: scale(0);
+  transform: scaleY(0);
   transform-origin: bottom;
   transition: transform var(--anim-fast) ease;
   border: 2px solid var(--create-task-bg-clr);
@@ -226,7 +315,7 @@ nav
 }
 
 .new-list__menu--show {
-  transform: scale(1);
+  transform: scaleY(1);
 }
 
 .new-list__category {

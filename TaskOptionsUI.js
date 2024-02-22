@@ -1,3 +1,4 @@
+import Icon from './Icon'
 import NavUI from './NavUI'
 import * as dayjs from 'dayjs'
 
@@ -19,10 +20,8 @@ export default class TaskOptionsUI {
   static updateDateIcon = () => {
     const $svg = TaskOptionsUI.$dateToggle.parentElement.lastElementChild
     if (!TaskOptionsUI.$dateToggle.checked) {
-      $svg.innerHTML = `
-<path stroke-linecap="round" stroke-linejoin="round"
-d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />`
-    } else $svg.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />`
+      $svg.innerHTML = Icon.Calendar
+    } else $svg.innerHTML = Icon.Cross
   }
 
   static handleDate = () => {
@@ -51,7 +50,7 @@ d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.2
   static handlePriority = (e, isOpen) => {
     const classList = document.querySelector('.task-nav__priority-menu').classList
     const $prioritySvg = document.querySelector('.task-priority-svg')
-    if (!isOpen) classList.remove('task-nav__priority-menu--show')
+    if (isOpen === false) classList.remove('task-nav__priority-menu--show')
     if (e === null) return
     classList.toggle('task-nav__priority-menu--show')
     if (e.target.dataset.color) {

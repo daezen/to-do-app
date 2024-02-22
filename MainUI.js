@@ -7,14 +7,14 @@ import Icon from './Icon'
 import './style.css'
 
 window.addEventListener('dblclick', () => {
-  console.log(Storage.getCustomLists())
+  // console.log(Storage.getCustomLists())
 })
 
 export default class MainUI {
   static initItems = () => {
     const $createTask = document.querySelector('[data-create-task-button]')
-    const $taskInput = document.querySelector('[data-create-task-text]')
     const $taskContainer = document.querySelector('[data-task-container]')
+    const $taskInput = document.querySelector('[data-create-task-text]')
     const $taskForm = document.querySelector('[data-create-task]')
     const $curtain = document.querySelector('.curtain')
     $taskContainer.addEventListener('click', MainUI.handleTask)

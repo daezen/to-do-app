@@ -28,9 +28,23 @@
 <body>
   <dialog data-create-category-modal class="create-category-modal">
     <div class="create-category-modal__menu">
-      <button>X</button>
-      <input type="text" placeholder="Add category name">
-      <button>continue</button>
+      <div class="create-category-modal__close">
+        <button data-modal-close></button>
+      </div>
+      <div class="modal-dropdown">
+        <button class="modal-dropdown__open">Choose a category</button>
+        <div class="modal-dropdown__lists">
+          <p>List 1</p>
+          <p>List 2</p>
+          <p>List 3</p>
+          <p>List 4</p>
+          <p>List 5</p>
+        </div>
+      </div>
+      <input class="create-category-modal__name" type="text" placeholder="Add category name">
+      <div class="create-category-modal__continue">
+        <button data-modal-continue>continue</button>
+      </div>
     </div>
   </dialog>
   <div class="curtain"></div>

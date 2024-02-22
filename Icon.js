@@ -193,5 +193,5 @@ Icon.append('afterbegin', document.querySelector('.custom-nav__item'), Icon.Circ
 Icon.append('afterbegin', document.querySelector('.new-list__category'), Icon.Category)
 // Create Custom Item
 Icon.append('afterbegin', document.querySelector('.new-list__list'), Icon.Circle0)
-//
-Icon.append('beforeend', document.querySelector('[data-category-options]'), Icon.DownArrow)
+// Modal Close
+Icon.append('afterbegin', document.querySelector('.create-category-modal__close').firstElementChild, Icon.Cross)

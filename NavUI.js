@@ -5,41 +5,33 @@ import * as dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import isToday from 'dayjs/plugin/isToday'
 import Icon from './Icon'
+import List from './List'
+import NavModal from './NavModal'
 dayjs.extend(isBetween)
 dayjs.extend(isToday)
 
 export default class NavUI {
   static initItems = () => {
     const $nav = document.querySelector('[data-nav]')
-    const $createButton = document.querySelector('[data-new-list]')
-    const $createCategory = document.querySelector('[data-new-list-category]')
-    const $modal = document.querySelector('dialog')
-    $modal.addEventListener('click', e => {
-      const dialogDimensions = $modal.getBoundingClientRect()
-      // prettier-ignore
-      if (e.clientX < dialogDimensions.left ||
-        e.clientX > dialogDimensions.right ||
-        e.clientY < dialogDimensions.top ||
-        e.clientY > dialogDimensions.bottom) {
-        $modal.close()
-      }
-    })
-    $createCategory.addEventListener('click', NavUI.newCategory)
-    $createButton.addEventListener('click', NavUI.toggleCreateItemMenu)
+    const $newList = document.querySelector('[data-new-list]')
+    const $newListMenu = document.querySelector('[data-new-list-menu]')
+    $newListMenu.addEventListener('click', NavUI.newList)
+    $newList.addEventListener('click', NavUI.toggleCreateListMenu)
     $nav.addEventListener('click', e => {
       if (e.target.tagName !== 'LI') return
       if (!e.target.hasAttribute('data-custom-nav')) NavUI.selectItem(e)
       else NavUI.selectCustomItem(e)
-      if (e.target.tagName === 'BUTTON') NavUI.createItem()
     })
     NavUI.renderLists()
+    NavModal.initItems()
   }
 
   static renderLists = () => {
+    const $container = document.querySelector('[data-custom-lists]')
+    $container.innerHTML = null
     Storage.getCustomLists()
       .filter(category => category.type === 'category')
       .forEach(category => {
-        const $container = document.querySelector('[data-custom-lists]')
         const categoryHtml = `
     <li class="custom-nav__category" data-nav-item="Category" data-category-id="${category.id}" data-custom-nav>${category.title}</li`
         $container.insertAdjacentHTML('beforeend', categoryHtml)
@@ -111,19 +103,12 @@ export default class NavUI {
     MainUI.updateMain(e, true)
   }
 
-  static toggleCreateItemMenu = bool => {
+  static toggleCreateListMenu = show => {
     const classList = document.querySelector('[data-new-list-menu]').classList
-    if (bool === true) return classList.add('new-list__menu--show')
-    else if (bool === false) return classList.remove('new-list__menu--show')
+    if (show === true) return classList.add('new-list__menu--show')
+    else if (show === false) return classList.remove('new-list__menu--show')
     classList.toggle('new-list__menu--show')
   }
-
-  static newCategory = () => {
-    const $modal = document.querySelector('[data-create-category-modal]')
-    $modal.showModal()
-  }
-
-  static createItem = () => {}
 
   static list = 'Today'
 }

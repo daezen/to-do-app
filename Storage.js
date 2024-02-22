@@ -2,6 +2,7 @@ import List from './List'
 import * as dayjs from 'dayjs'
 import MainUI from './MainUI'
 import Task from './Task'
+import NavUI from './NavUI'
 
 export default class Storage {
   static initSampleTasks = () => {
@@ -52,6 +53,7 @@ export default class Storage {
   static addList = list => {
     Storage.customLists.push(list)
     Storage.saveItems()
+    NavUI.renderLists()
   }
 
   static findList = id => {
