@@ -6,49 +6,64 @@ import List from './List'
 export default class NavModal {
   static initItems = () => {
     const $modal = document.querySelector('dialog')
-    const $modalDropdownOpen = document.querySelector('.modal-dropdown')
+    const $modalDropdown = document.querySelector('.modal-dropdown')
     const $modalCloseButton = document.querySelector('[data-modal-close]')
-    const $modalDropdown = document.querySelector('.modal-dropdown__lists')
+    const $modalDropdownOpen = document.querySelector('.modal-dropdown__open')
+    const $modalInput = document.querySelector('.create-category-modal__name')
+    const $modalCategoriesList = document.querySelector('.modal-dropdown__lists')
+    const $modalContinue = document.querySelector('[data-modal-continue]')
     const $newList = document.querySelector('[data-new-list-menu]')
-    $newList.addEventListener('click', NavModal.newList)
+    $newList.addEventListener('click', e => NavModal.newList(e, $modalInput))
     $modalCloseButton.addEventListener('click', () => $modal.close())
-    $modalDropdownOpen.addEventListener('click', () => {
-      $modalDropdown.classList.toggle('modal-dropdown__lists--show')
+    $modalDropdown.addEventListener('click', e => {
+      if (e.target.classList.contains('modal-dropdown__lists')) return
+      $modalCategoriesList.classList.toggle('modal-dropdown__lists--show')
     })
     $modal.addEventListener('click', e => {
       const dialogDimensions = $modal.getBoundingClientRect()
       const $modalPlaceholder = document.querySelector('.create-category-modal__name')
       if (e.clientX < dialogDimensions.left || e.clientX > dialogDimensions.right || e.clientY < dialogDimensions.top || e.clientY > dialogDimensions.bottom) {
-        $modalDropdown.classList.remove('modal-dropdown__lists--show')
+        $modalCategoriesList.classList.remove('modal-dropdown__lists--show')
         $modalPlaceholder.value = null
         $modal.close()
       }
     })
-  }
-
-  static newList = e => {
-    const $modalDropdown = document.querySelector('.modal-dropdown')
-    const $modal = document.querySelector('[data-create-category-modal]')
-    const $modalContinue = document.querySelector('[data-modal-continue]')
-    const $modalInput = document.querySelector('.create-category-modal__name')
-    let isCategory = e.target.hasAttribute('data-new-list-category')
-    $modalContinue.addEventListener('click', () => {
+    $modalContinue.addEventListener('click', e => {
+      let isCategory = e.target.hasAttribute('data-new-list-category')
       if ($modalInput.value === '') return
       if (isCategory) Storage.addList(new List(Date.now(), $modalInput.value, 'category', null))
-      if (!isCategory) Storage.addList(new List(Date.now(), $modalInput.value, 'list', null))
+      if (!isCategory) {
+        let categoryId = Number($modalDropdownOpen.dataset.id)
+        Storage.addList(new List(categoryId, $modalInput.value, 'list', Date.now()))
+      }
       $modal.close()
-      $modalInput.value = null
     })
+    $modalCategoriesList.addEventListener('click', NavModal.selectCategory)
+  }
+
+  static newList = (e, input) => {
+    const $modalDropdown = document.querySelector('.modal-dropdown')
+    const $modal = document.querySelector('[data-create-category-modal]')
+    if (e.target.tagName !== 'BUTTON') return
+    let isCategory = e.target.hasAttribute('data-new-list-category')
     if (isCategory) {
-      $modalInput.setAttribute('placeholder', 'Add category name')
+      input.setAttribute('placeholder', 'Add category name')
       $modalDropdown.style.display = 'none'
     } else if (!isCategory) {
-      $modalInput.setAttribute('placeholder', 'Add list name')
+      input.setAttribute('placeholder', 'Add list name')
       $modalDropdown.style.display = ''
       NavModal.renderCategories()
     } else return '?'
     NavUI.toggleCreateListMenu(false)
     $modal.showModal()
+  }
+
+  static selectCategory = e => {
+    const $modalDropdownOpen = document.querySelector('.modal-dropdown__open')
+    if (e.target.tagName !== 'P') return
+    $modalDropdownOpen.dataset.id = e.target.dataset.categoryId
+    $modalDropdownOpen.textContent = e.target.textContent
+    Icon.append('afterbegin', $modalDropdownOpen, Icon.Category)
   }
 
   static renderCategories = () => {

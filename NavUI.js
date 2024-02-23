@@ -5,7 +5,6 @@ import * as dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import isToday from 'dayjs/plugin/isToday'
 import Icon from './Icon'
-import List from './List'
 import NavModal from './NavModal'
 dayjs.extend(isBetween)
 dayjs.extend(isToday)
@@ -14,8 +13,6 @@ export default class NavUI {
   static initItems = () => {
     const $nav = document.querySelector('[data-nav]')
     const $newList = document.querySelector('[data-new-list]')
-    const $newListMenu = document.querySelector('[data-new-list-menu]')
-    $newListMenu.addEventListener('click', NavUI.newList)
     $newList.addEventListener('click', NavUI.toggleCreateListMenu)
     $nav.addEventListener('click', e => {
       if (e.target.tagName !== 'LI') return
@@ -48,12 +45,12 @@ export default class NavUI {
   }
 
   static initCategory = category => {
-    const $category = document.querySelector(`[data-category-id="${category.id}"]`)
+    const $category = document.querySelector(`li[data-category-id="${category.id}"]`)
     Icon.append('afterbegin', $category, Icon.Category)
   }
 
   static initList = list => {
-    const $list = document.querySelector(`[data-uid="${list.uid}"]`)
+    const $list = document.querySelector(`li[data-uid="${list.uid}"]`)
     Icon.append('afterbegin', $list, Icon.Circle0)
   }
 
