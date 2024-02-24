@@ -6,10 +6,6 @@ import Task from './Task'
 import Icon from './Icon'
 import './style.css'
 
-window.addEventListener('dblclick', () => {
-  console.log(Storage.getTasksList())
-})
-
 export default class MainUI {
   static list
 
