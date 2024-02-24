@@ -33,6 +33,12 @@ export default class Storage {
     MainUI.renderTasks()
   }
 
+  static checkTask = (id, isDone) => {
+    const task = Storage.taskList.find(task => id === task.id)
+    task.isDone = isDone
+    Storage.saveTasks()
+  }
+
   static deleteTask = id => {
     const task = Storage.taskList.findIndex(task => id === task.id)
     Storage.taskList.splice(task, 1)
@@ -52,16 +58,23 @@ export default class Storage {
 
   static addList = list => {
     Storage.customLists.push(list)
-    Storage.saveItems()
+    Storage.saveLists()
     NavUI.renderLists()
   }
 
   static findList = id => {
-    return Storage.customLists.find(list => id === list.id)
+    return Storage.customLists.find(list => id === list.uid)
+  }
+
+  static deleteList = id => {
+    const list = Storage.customLists.findIndex(list => id === list.uid)
+    Storage.customLists.splice(list, 1)
+    Storage.saveLists()
+    NavUI.renderLists()
   }
 
   static saveTasks = () => localStorage.setItem('tasks', JSON.stringify(Storage.taskList))
-  static saveItems = () => localStorage.setItem('lists', JSON.stringify(Storage.customLists))
+  static saveLists = () => localStorage.setItem('lists', JSON.stringify(Storage.customLists))
   static customLists = Storage.loadLists() || []
   static taskList = Storage.loadTasks() || []
   static getTasksList = () => Storage.taskList

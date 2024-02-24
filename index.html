@@ -14,7 +14,7 @@
       height: 100%;
       width: 100%;
       transition:
-        transform .8s ease;
+        transform 2s ease;
       z-index: 69;
     }
 
@@ -26,8 +26,11 @@
 </head>
 
 <body>
+  <div class="ctx-menu">
+    <p class="ctx-menu__del">delete?</p>
+  </div>
   <dialog data-create-category-modal class="create-category-modal">
-    <div class="create-category-modal__menu">
+    <form class="create-category-modal__menu" data-id="0">
       <div class="create-category-modal__close">
         <button data-modal-close></button>
       </div>
@@ -40,7 +43,7 @@
       <div class="create-category-modal__continue">
         <button data-modal-continue>continue</button>
       </div>
-    </div>
+    </form>
   </dialog>
   <div class="curtain"></div>
   <div class="window">

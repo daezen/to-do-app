@@ -7,10 +7,12 @@ import Icon from './Icon'
 import './style.css'
 
 window.addEventListener('dblclick', () => {
-  // console.log(Storage.getCustomLists())
+  console.log(Storage.getTasksList())
 })
 
 export default class MainUI {
+  static list
+
   static initItems = () => {
     const $createTask = document.querySelector('[data-create-task-button]')
     const $taskContainer = document.querySelector('[data-task-container]')
@@ -83,7 +85,9 @@ export default class MainUI {
 
   static addTask = $input => {
     const $date = document.querySelector('[data-date-input]')
-    Storage.addTask(new Task(Date.now(), $input.value, null, $date.value, TaskOptionsUI.getCurrPriority(), null, null, false))
+    const list = MainUI.list
+    if (list) Storage.addTask(new Task(Date.now(), $input.value, null, $date.value, TaskOptionsUI.getCurrPriority(), list.id, list.uid, false))
+    else Storage.addTask(new Task(Date.now(), $input.value, null, $date.value, TaskOptionsUI.getCurrPriority(), null, null, false))
     TaskOptionsUI.toggleDateInput()
     TaskOptionsUI.resetPriority()
     $input.value = null
@@ -134,28 +138,15 @@ export default class MainUI {
 
   static handleTask(e) {
     const task = Storage.findTask(Number(e.target.closest('li').dataset.task))
+    const id = Number(e.target.closest('li').dataset.task)
     if (e.target.tagName === 'P') TaskPopupUI.toggleElement(task)
-    if (e.target.tagName === 'BUTTON') {
-      Storage.deleteTask(task.id)
-      TaskPopupUI.toggleElement(task, 'del')
-    }
-    if (e.target.tagName === 'INPUT') {
-      task.isDone = e.target.checked
-      Storage.saveTasks()
-    }
+    if (e.target.tagName === 'BUTTON') Storage.deleteTask(task.id)
+    if (e.target.tagName === 'INPUT') Storage.checkTask(id, e.target.checked)
   }
 
   static setTaskPriority = (task, check) => {
-    switch (task.priority) {
-      case 'blue':
-        check.classList.add('tasks__checkbox--blue')
-        break
-      case 'yellow':
-        check.classList.add('tasks__checkbox--yellow')
-        break
-      case 'red':
-        check.classList.add('tasks__checkbox--red')
-        break
-    }
+    if (task.priority === 'blue') return check.classList.add('tasks__checkbox--blue')
+    if (task.priority === 'yellow') return check.classList.add('tasks__checkbox--yellow')
+    if (task.priority === 'red') return check.classList.add('tasks__checkbox--red')
   }
 }

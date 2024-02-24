@@ -10,6 +10,8 @@ dayjs.extend(isBetween)
 dayjs.extend(isToday)
 
 export default class NavUI {
+  static list = 'Today'
+
   static initItems = () => {
     const $nav = document.querySelector('[data-nav]')
     const $newList = document.querySelector('[data-new-list]')
@@ -19,8 +21,10 @@ export default class NavUI {
       if (!e.target.hasAttribute('data-custom-nav')) NavUI.selectItem(e)
       else NavUI.selectCustomItem(e)
     })
+    $nav.addEventListener('contextmenu', ContextMenu.show)
     NavUI.renderLists()
     NavModal.initItems()
+    ContextMenu.init()
   }
 
   static renderLists = () => {
@@ -30,7 +34,7 @@ export default class NavUI {
       .filter(category => category.type === 'category')
       .forEach(category => {
         const categoryHtml = `
-    <li class="custom-nav__category" data-nav-item="Category" data-category-id="${category.id}" data-custom-nav>${category.title}</li`
+    <li class="custom-nav__category" data-nav-item="Category" data-category-id="${category.id}" data-uid="${category.uid}" data-custom-nav>${category.title}</li`
         $container.insertAdjacentHTML('beforeend', categoryHtml)
         Storage.getCustomLists()
           .filter(list => list.id === category.id && list.type === 'list')
@@ -87,6 +91,7 @@ export default class NavUI {
   static selectItem = e => {
     const $nav = document.querySelector('[data-nav]')
     const $navItems = $nav.querySelectorAll('li')
+    MainUI.list = null
     $navItems.forEach(item => item.classList.remove('nav__item--selected'))
     e.target.classList.add('nav__item--selected')
     MainUI.updateMain(e, false)
@@ -95,9 +100,11 @@ export default class NavUI {
   static selectCustomItem = e => {
     const $nav = document.querySelector('[data-nav]')
     const $navItems = $nav.querySelectorAll('li')
+    let uid = Number(e.target.dataset.uid)
     $navItems.forEach(item => item.classList.remove('nav__item--selected'))
     e.target.classList.add('nav__item--selected')
     MainUI.updateMain(e, true)
+    MainUI.list = Storage.findList(uid)
   }
 
   static toggleCreateListMenu = show => {
@@ -106,6 +113,46 @@ export default class NavUI {
     else if (show === false) return classList.remove('new-list__menu--show')
     classList.toggle('new-list__menu--show')
   }
+}
 
-  static list = 'Today'
+class ContextMenu {
+  static list = {}
+
+  static init = () => {
+    const $menu = document.querySelector('.ctx-menu')
+    const $del = document.querySelector('.ctx-menu__del')
+    window.addEventListener('click', e => {
+      $menu.style.visibility = 'hidden'
+    })
+    $del.addEventListener('click', ContextMenu.delete)
+  }
+
+  static show = e => {
+    e.preventDefault()
+    const $menu = document.querySelector('.ctx-menu')
+    let isCategory = e.target.hasAttribute('data-category-id')
+    let isList = e.target.hasAttribute('data-list-id')
+    if (isCategory || isList) {
+      $menu.style.left = `${e.clientX}px`
+      $menu.style.top = `${e.clientY}px`
+      $menu.style.visibility = 'visible'
+    }
+    if (isCategory) {
+      ContextMenu.list.type = 'category'
+      ContextMenu.list.id = Number(e.target.dataset.categoryId)
+    }
+    if (isList) {
+      ContextMenu.list.type = 'list'
+      ContextMenu.list.id = Number(e.target.dataset.uid)
+    }
+  }
+
+  static delete = () => {
+    if (ContextMenu.list.type === 'category') {
+      Storage.getCustomLists()
+        .filter(list => ContextMenu.list.id === list.id)
+        .forEach(list => Storage.deleteList(list.uid))
+    }
+    if (ContextMenu.list.type === 'list') Storage.deleteList(ContextMenu.list.id)
+  }
 }

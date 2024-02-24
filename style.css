@@ -39,6 +39,7 @@ svg {
 }
 
 body {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,12 +53,23 @@ body {
   overflow-x: auto;
 }
 
+.ctx-menu {
+  cursor: pointer;
+  position: absolute;
+  visibility: hidden;
+  border-radius: var(--s-radius);
+  padding: var(--s-gap) var(--l-gap);
+  background: var(--create-task-bg-clr);
+  z-index: 2;
+}
+
 .curtain {
   transform-origin: right;
   transform: scaleX(0);
 }
 
 .window {
+  position: relative;
   display: grid;
   grid-template-columns: 16rem 30rem 26rem;
   grid-template-rows: 3fr 1fr 40px;
@@ -172,17 +184,49 @@ nav
 .modal-dropdown {
   cursor: pointer;
   position: relative;
-  border-radius: var(--s-radius);
   background: var(--create-task-bg-clr);
-  padding: var(--m-gap) var(--m-gap);
+  border-radius: var(--s-radius);
+}
+
+.modal-dropdown::before {
+  display: none;
+  content: '';
+  position: absolute;
+  border-radius: var(--s-radius);
+  width: 100%;
+  height: 100%;
+  left: 50%;
+  translate: -50%;
+  outline: 1px solid white;
+}
+
+.modal-dropdown.show::before {
+  display: unset;
+  animation: blink .75s both;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 .modal-dropdown__open {
   all: unset;
+  pointer-events: none;
   display: flex;
   align-items: center;
   height: 1.25rem;
   gap: var(--s-gap);
+  padding: var(--m-gap) var(--m-gap);
 }
 
 .modal-dropdown__open svg {
@@ -192,7 +236,7 @@ nav
 
 .modal-dropdown__lists {
   position: absolute;
-  margin-top: var(--l-gap);
+  margin-top: var(--m-gap);
   left: 50%;
   width: 100%;
   transform: translateX(-50%) scaleY(0);
@@ -283,6 +327,10 @@ nav
     background var(--anim-normal) ease;
 }
 
+.custom-nav__category:hover {
+  background: var(--create-task-bg-clr);
+}
+
 .custom-nav__category svg {
   height: var(--icon-size);
 }
@@ -298,6 +346,10 @@ nav
   height: 2rem;
   transition:
     background var(--anim-normal) ease;
+}
+
+.custom-nav__item:hover {
+  background: var(--create-task-bg-clr);
 }
 
 .custom-nav__item svg {
