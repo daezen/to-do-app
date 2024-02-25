@@ -1,8 +1,8 @@
-import List from './List'
-import * as dayjs from 'dayjs'
-import MainUI from './MainUI'
-import Task from './Task'
-import NavUI from './NavUI'
+import MainUI from './MainUI.js'
+import NavUI from './NavUI.js'
+import dayjs from 'dayjs'
+import List from './List.js'
+import Task from './Task.js'
 
 export default class Storage {
   static initSampleTasks = () => {

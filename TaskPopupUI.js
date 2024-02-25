@@ -1,6 +1,6 @@
-import Storage from './Storage'
-import MainUI from './MainUI'
-import * as dayjs from 'dayjs'
+import Storage from './Storage.js'
+import MainUI from './MainUI.js'
+import dayjs from 'dayjs'
 
 export default class TaskPopupUI {
   static initItems = () => {

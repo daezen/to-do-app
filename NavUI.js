@@ -1,11 +1,11 @@
-import TaskOptionsUI from './TaskOptionsUI'
-import Storage from './Storage'
-import MainUI from './MainUI'
-import * as dayjs from 'dayjs'
-import isBetween from 'dayjs/plugin/isBetween'
-import isToday from 'dayjs/plugin/isToday'
-import Icon from './Icon'
-import NavModal from './NavModal'
+import TaskOptionsUI from './TaskOptionsUI.js'
+import Storage from './Storage.js'
+import MainUI from './MainUI.js'
+import dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween.js'
+import isToday from 'dayjs/plugin/isToday.js'
+import Icon from './Icon.js'
+import NavModal from './NavModal.js'
 dayjs.extend(isBetween)
 dayjs.extend(isToday)
 
@@ -34,7 +34,7 @@ export default class NavUI {
       .filter(category => category.type === 'category')
       .forEach(category => {
         const categoryHtml = `
-    <li class="custom-nav__category" data-nav-item="Category" data-category-id="${category.id}" data-uid="${category.uid}" data-custom-nav>${category.title}</li`
+    <li class="custom-nav__category" data-nav-item="Category" data-category-id="${category.id}" data-uid="${category.uid}" data-custom-nav>${category.title}</li>`
         $container.insertAdjacentHTML('beforeend', categoryHtml)
         Storage.getCustomLists()
           .filter(list => list.id === category.id && list.type === 'list')

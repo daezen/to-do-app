@@ -1,9 +1,9 @@
-import TaskOptionsUI from './TaskOptionsUI'
-import TaskPopupUI from './TaskPopupUI'
-import Storage from './Storage'
-import NavUI from './NavUI'
-import Task from './Task'
-import Icon from './Icon'
+import TaskOptionsUI from './TaskOptionsUI.js'
+import TaskPopupUI from './TaskPopupUI.js'
+import Storage from './Storage.js'
+import NavUI from './NavUI.js'
+import Task from './Task.js'
+import Icon from './Icon.js'
 import './style.css'
 
 export default class MainUI {

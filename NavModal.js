@@ -1,7 +1,7 @@
-import NavUI from './NavUI'
-import Storage from './Storage'
-import Icon from './Icon'
-import List from './List'
+import NavUI from './NavUI.js'
+import Storage from './Storage.js'
+import Icon from './Icon.js'
+import List from './List.js'
 
 export default class NavModal {
   static isCategory = false

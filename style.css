@@ -122,6 +122,10 @@ nav
     background var(--anim-normal) ease;
 }
 
+.nav__item:hover {
+  background: var(--create-task-bg-clr);
+}
+
 .nav__item svg {
   height: var(--icon-size);
 }

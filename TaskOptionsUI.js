@@ -1,6 +1,6 @@
-import Icon from './Icon'
-import NavUI from './NavUI'
-import * as dayjs from 'dayjs'
+import Icon from './Icon.js'
+import NavUI from './NavUI.js'
+import dayjs from 'dayjs'
 
 export default class TaskOptionsUI {
   static $dateToggle = document.querySelector('[data-task-date-check]')
