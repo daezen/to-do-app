@@ -37,12 +37,14 @@ export default class NavModal {
   }
 
   static handleSubmit = e => {
+    console.log(e.target)
     e.preventDefault()
     const $input = document.querySelector('.create-category-modal__name')
     const $dropdown = document.querySelector('.modal-dropdown')
     let id = Number(e.target.dataset.id)
     if ($input.value === '') return
     if (id === 0 && !NavModal.isCategory) return $dropdown.classList.add('show')
+    console.log('string')
     NavModal.newList(id, $input.value)
     NavModal.toggleModal(false)
   }
