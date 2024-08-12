@@ -11,7 +11,7 @@ export default class NavModal {
     const $close = document.querySelector('[data-modal-close]')
     const $dropdown = document.querySelector('.modal-dropdown')
     const $newList = document.querySelector('[data-new-list-item]')
-    const $menu = document.querySelector('.create-category-modal__menu')
+    const $menu = document.querySelector('.create-category-modal')
     const $newCategory = document.querySelector('[data-new-list-category]')
     const $categoriesList = document.querySelector('.modal-dropdown__lists')
     $newCategory.addEventListener('click', () => NavModal.updateModal(true))
@@ -37,7 +37,6 @@ export default class NavModal {
   }
 
   static handleSubmit = e => {
-    console.log(e.target)
     e.preventDefault()
     const $input = document.querySelector('.create-category-modal__name')
     const $dropdown = document.querySelector('.modal-dropdown')
@@ -115,7 +114,6 @@ export default class NavModal {
       .forEach(category => {
         let listHtml = `<p data-category-id="${category.id}">${category.title}</p>`
         $categories.insertAdjacentHTML('beforeend', listHtml)
-        //
         const $category = document.querySelector(`p[data-category-id="${category.id}"]`)
         Icon.append('afterbegin', $category, Icon.Category)
       })
