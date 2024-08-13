@@ -18,7 +18,6 @@ export default class TaskPopupUI {
 
   static toggleElement = (task, btn) => {
     const classList = document.querySelector('[data-task-description]').classList
-    const $title = document.querySelector('[data-task-description-title]')
     if (btn === 'close') return classList.remove('task-description--show')
     if (!classList.contains('task-description--show')) classList.add('task-description--show')
     TaskPopupUI.updateHtml(task)
