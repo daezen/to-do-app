@@ -34,7 +34,6 @@ export default class NavModal {
       }
     })
     $dropdown.addEventListener('animationend', () => $dropdown.classList.remove('show'))
-    console.log('hola')
   }
 
   static handleSubmit = e => {
