@@ -49,7 +49,9 @@ export default class NavUI {
   }
 
   static initCategory = category => {
-    const $category = document.querySelector(`li[data-category-id="${category.id}"]`)
+    const $category = document.querySelector(
+      `li[data-category-id="${category.id}"]`,
+    )
     Icon.append('afterbegin', $category, Icon.Category)
   }
 
@@ -63,7 +65,9 @@ export default class NavUI {
   static getList = () => {
     TaskOptionsUI.handleDate()
     if (Array.isArray(NavUI.list) && NavUI.list[1]) {
-      return Storage.getTasksList().filter(task => task.category === NavUI.list[0])
+      return Storage.getTasksList().filter(
+        task => task.category === NavUI.list[0],
+      )
     } else if (Array.isArray(NavUI.list) && !NavUI.list[1]) {
       return Storage.getTasksList().filter(task => task.list === NavUI.list[0])
     }
@@ -120,11 +124,9 @@ class ContextMenu {
 
   static init = () => {
     const $menu = document.querySelector('.ctx-menu')
-    const $del = document.querySelector('.ctx-menu__del')
-    window.addEventListener('click', e => {
-      $menu.style.visibility = 'hidden'
-    })
-    $del.addEventListener('click', ContextMenu.delete)
+
+    $menu.addEventListener('click', ContextMenu.delete)
+    window.addEventListener('click', () => ($menu.style.visibility = 'hidden'))
   }
 
   static show = e => {
@@ -132,15 +134,18 @@ class ContextMenu {
     const $menu = document.querySelector('.ctx-menu')
     let isCategory = e.target.hasAttribute('data-category-id')
     let isList = e.target.hasAttribute('data-list-id')
+
     if (isCategory || isList) {
       $menu.style.left = `${e.clientX}px`
       $menu.style.top = `${e.clientY}px`
       $menu.style.visibility = 'visible'
     }
+
     if (isCategory) {
       ContextMenu.list.type = 'category'
       ContextMenu.list.id = Number(e.target.dataset.categoryId)
     }
+
     if (isList) {
       ContextMenu.list.type = 'list'
       ContextMenu.list.id = Number(e.target.dataset.uid)
@@ -153,6 +158,8 @@ class ContextMenu {
         .filter(list => ContextMenu.list.id === list.id)
         .forEach(list => Storage.deleteList(list.uid))
     }
-    if (ContextMenu.list.type === 'list') Storage.deleteList(ContextMenu.list.id)
+
+    if (ContextMenu.list.type === 'list')
+      Storage.deleteList(ContextMenu.list.id)
   }
 }

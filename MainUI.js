@@ -15,6 +15,7 @@ export default class MainUI {
     const $taskInput = document.querySelector('[data-create-task-text]')
     const $taskForm = document.querySelector('[data-create-task]')
     const $curtain = document.querySelector('.curtain')
+
     $taskContainer.addEventListener('click', MainUI.handleTask)
     $curtain.addEventListener('transitionend', () => $curtain.remove())
     $createTask.addEventListener('click', MainUI.toggleCreateTask)
@@ -30,18 +31,20 @@ export default class MainUI {
       if ($taskInput.value === '') return
       else MainUI.addTask($taskInput)
     })
+
     if (!localStorage.getItem('tasks')) Storage.initSampleTasks()
     if (!localStorage.getItem('lists')) Storage.initSampleLists()
     TaskOptionsUI.initItems()
     TaskPopupUI.initItems()
     MainUI.renderTasks()
     NavUI.initItems()
-    // Storage.save()
   }
 
   static toggleCreateTask = show => {
     const classListText = document.querySelector('[data-create-task]').classList
-    const classListNav = document.querySelector('[data-task-container]').classList
+    const classListNav = document.querySelector(
+      '[data-task-container]',
+    ).classList
     const $input = document.querySelector('[data-create-task-text]')
     let isOpen = classListText.contains('create-task--show')
     if (show === false) {
@@ -63,9 +66,15 @@ export default class MainUI {
     }
   }
 
-  static changeHeaderText = text => (document.querySelector('[data-main-header]').textContent = text)
+  static changeHeaderText = text =>
+    (document.querySelector('[data-main-header]').textContent = text)
 
-  static changeHeaderIcon = icon => Icon.append('afterbegin', document.querySelector('[data-main-header]'), Icon[icon])
+  static changeHeaderIcon = icon =>
+    Icon.append(
+      'afterbegin',
+      document.querySelector('[data-main-header]'),
+      Icon[icon],
+    )
 
   static updateMain = (e, isCustomList) => {
     MainUI.changeHeaderText(e.target.textContent)
@@ -73,7 +82,8 @@ export default class MainUI {
     let isCategory = e.target.hasAttribute('data-category-id')
     if (isCustomList === false) NavUI.setList(e.target.dataset.navItem)
     if (isCustomList === true) {
-      if (isCategory) NavUI.setList([Number(e.target.dataset.categoryId), isCategory])
+      if (isCategory)
+        NavUI.setList([Number(e.target.dataset.categoryId), isCategory])
       else NavUI.setList([Number(e.target.dataset.uid), isCategory])
     }
     MainUI.renderTasks()
@@ -82,8 +92,34 @@ export default class MainUI {
   static addTask = $input => {
     const $date = document.querySelector('[data-date-input]')
     const list = MainUI.list
-    if (list) Storage.addTask(new Task(Date.now(), $input.value, null, $date.value, TaskOptionsUI.getCurrPriority(), list.id, list.uid, false))
-    else Storage.addTask(new Task(Date.now(), $input.value, null, $date.value, TaskOptionsUI.getCurrPriority(), null, null, false))
+
+    if (list)
+      Storage.addTask(
+        new Task(
+          Date.now(),
+          $input.value,
+          null,
+          $date.value,
+          TaskOptionsUI.getCurrPriority(),
+          list.id,
+          list.uid,
+          false,
+        ),
+      )
+    else
+      Storage.addTask(
+        new Task(
+          Date.now(),
+          $input.value,
+          null,
+          $date.value,
+          TaskOptionsUI.getCurrPriority(),
+          null,
+          null,
+          false,
+        ),
+      )
+
     TaskOptionsUI.toggleDateInput()
     TaskOptionsUI.resetPriority()
     $input.value = null
@@ -92,6 +128,7 @@ export default class MainUI {
   static renderTasks = () => {
     const $container = document.querySelector('[data-task-container]')
     $container.innerHTML = null
+
     NavUI.getList().forEach(task => {
       const { id, title } = task
       const taskHtml = `
@@ -106,6 +143,7 @@ export default class MainUI {
       <button></button>
     </div>
   </li>`
+
       $container.insertAdjacentHTML('beforeend', taskHtml)
       MainUI.initTask(task)
     })
@@ -118,31 +156,37 @@ export default class MainUI {
     const $checkbox = $task.querySelector('span')
     const $delete = $task.querySelector('button')
     const $input = $task.querySelector('input')
+
     if (task.isDone) {
       lineClassList.add('tasks__line-through--show')
       textClassList.add('tasks__text--checked')
     }
+
     $input.addEventListener('change', e => {
       lineClassList.toggle('tasks__line-through--show', e.target.checked)
       textClassList.toggle('tasks__text--checked', e.target.checked)
     })
     $input.checked = task.isDone
+
     MainUI.setTaskPriority(task, $checkbox)
     Icon.append('afterbegin', $delete, Icon.Cross)
     Icon.append('afterbegin', $checkbox, Icon.Check)
   }
 
   static handleTask(e) {
-    const task = Storage.findTask(Number(e.target.closest('li').dataset.task))
     const id = Number(e.target.closest('li').dataset.task)
+    const task = Storage.findTask(id)
     if (e.target.tagName === 'P') TaskPopupUI.toggleElement(task)
     if (e.target.tagName === 'BUTTON') Storage.deleteTask(task.id)
     if (e.target.tagName === 'INPUT') Storage.checkTask(id, e.target.checked)
   }
 
   static setTaskPriority = (task, check) => {
-    if (task.priority === 'blue') return check.classList.add('tasks__checkbox--blue')
-    if (task.priority === 'yellow') return check.classList.add('tasks__checkbox--yellow')
-    if (task.priority === 'red') return check.classList.add('tasks__checkbox--red')
+    if (task.priority === 'blue')
+      return check.classList.add('tasks__checkbox--blue')
+    if (task.priority === 'yellow')
+      return check.classList.add('tasks__checkbox--yellow')
+    if (task.priority === 'red')
+      return check.classList.add('tasks__checkbox--red')
   }
 }
